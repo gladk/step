@@ -33,14 +33,3 @@ Description: interactive physical simulator for KDE
  of the experiment.
  .
  This package is part of the KDE education module.
-
-Package: step-dbg
-Architecture: amd64 i386 powerpc
-Section: debug
-Priority: extra
-Depends: kde-runtime-dbg, step (= ${binary:Version}), ${misc:Depends}
-Breaks: kdeedu-dbg
-Replaces: kdeedu-dbg
-Description: debugging symbols for the KDE education module
- This package contains debugging files used to investigate problems with
- binaries included in the KDE education module.
