@@ -9,6 +9,7 @@ Copyright: 2007 Anne-Marie Mahfouf
 License: GFDL-1.2+
 
 Files: debian/*
+Copyright: 2011 Debian Qt/KDE Maintainers <debian-qt-kde@lists.debian.org>
 Copyright: 2011 Kubuntu Developers <kubuntu-devel@lists.launchpad.net>
 License: GPL-2+
 
