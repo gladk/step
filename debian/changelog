@@ -1,0 +1,28 @@
+step (4:4.7.1-0ubuntu2) oneiric; urgency=low
+
+  * No-change rebuild so translations aren't stripped from .desktop
+    files anymore.
+
+ -- Felix Geyer <debfx-pkg@fobos.de>  Fri, 16 Sep 2011 01:18:13 +0200
+
+step (4:4.7.1-0ubuntu1) oneiric; urgency=low
+
+  * New upstream release
+
+ -- Jonathan Kolberg <bulldog98@kubuntu-de.org>  Fri, 09 Sep 2011 23:59:34 -0400
+
+step (4:4.7.0-0ubuntu1) oneiric; urgency=low
+
+  * New upstream release 
+  * Drop step_needs_-lcln.diff as it's not needed anymore 
+
+ -- Philip Muškovac <yofel@kubuntu.org>  Wed, 27 Jul 2011 11:30:05 +0200
+
+step (4:4.6.90+repack-0ubuntu1) oneiric; urgency=low
+
+  * New upstream release candidate
+    - bump kde-cd-dev-latest dep
+  * Split packaging from kdeedu
+    - refresh step_needs_-lcln.diff
+
+ -- Philip Muškovac <yofel@kubuntu.org>  Wed, 13 Jul 2011 16:03:30 +0200

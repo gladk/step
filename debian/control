@@ -1,0 +1,46 @@
+Source: step
+Section: kde
+Priority: optional
+Maintainer: Kubuntu Developers <kubuntu-devel@lists.ubuntu.com>
+XSBC-Original-Maintainer: Philip Muskovac <yofel@kubuntu.org>
+Build-Depends: cmake,
+               debhelper (>= 7.3.16),
+               kde-sc-dev-latest (>= 4:4.7.1),
+               kdelibs5-dev (>= 4:4.6),
+               libeigen2-dev,
+               libglib2.0-dev,
+               libgsl0-dev,
+               libqalculate-dev,
+               libqt4-opengl-dev,
+               libx11-dev,
+               libxml2-dev,
+               pkg-kde-tools (>= 0.12)
+Standards-Version: 3.9.2
+Homepage: http://edu.kde.org/
+Vcs-Browser: http://bazaar.launchpad.net/~kubuntu-packagers/kubuntu-packaging/step
+Vcs-Bzr: https://code.launchpad.net/~kubuntu-packagers/kubuntu-packaging/step
+
+Package: step
+Architecture: amd64 i386 powerpc
+Section: science
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Description: interactive physical simulator for KDE
+ With Step you can not only learn but feel how physics works. You place some
+ bodies on the scene, add some forces such as gravity or springs, then click
+ "Simulate" and Step shows you how your scene will evolve according to the
+ laws of physics. You can change every property of bodies/forces in your
+ experiment (even during simulation) and see how this will change evolution
+ of the experiment.
+ .
+ This package is part of the KDE education module.
+
+Package: step-dbg
+Architecture: amd64 i386 powerpc
+Section: debug
+Priority: extra
+Depends: kde-runtime-dbg, step (= ${binary:Version}), ${misc:Depends}
+Breaks: kdeedu-dbg
+Replaces: kdeedu-dbg
+Description: debugging symbols for the KDE education module
+ This package contains debugging files used to investigate problems with
+ binaries included in the KDE education module.
