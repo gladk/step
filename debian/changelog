@@ -1,5 +1,5 @@
-step (4:4.7.2-0r0) UNRELEASED; urgency=low
+step (4:4.7.2-0r0) experimental; urgency=low
 
   * Initial release. Start from the Kubuntu packaging, thanks!
 
- -- Debian Qt/KDE Maintainers <debian-qt-kde@lists.debian.org>  Mon, 24 Oct 2011 23:04:59 +0200
+ -- Debian Qt/KDE Maintainers <debian-qt-kde@lists.debian.org>  Sat, 03 Dec 2011 10:41:55 -0300
