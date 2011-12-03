@@ -1,4 +1,4 @@
-step (4:4.7.2-0r0) experimental; urgency=low
+step (4:4.7.2-1) experimental; urgency=low
 
   * Initial release. Start from the Kubuntu packaging, thanks!
 
