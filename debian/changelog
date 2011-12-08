@@ -1,3 +1,13 @@
+step (4:4.7.4-0r0) UNRELEASED; urgency=low
+
+  * New upstream release. 
+  
+  [ José Manuel Santamaría Lema ]
+  * Bump kde-sc-dev-latest build dependency to 4:4.7.4.
+  * Add myself to Uploaders.
+
+ -- Debian Qt/KDE Maintainers <debian-qt-kde@lists.debian.org>  Thu, 08 Dec 2011 01:47:05 +0100
+
 step (4:4.7.2-1) experimental; urgency=low
 
   * Initial release. Start from the Kubuntu packaging, thanks!
