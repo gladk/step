@@ -1,4 +1,4 @@
-step (4:4.7.4-0r0) UNRELEASED; urgency=low
+step (4:4.7.4-1) experimental; urgency=low
 
   * New upstream release. 
   
@@ -6,7 +6,7 @@ step (4:4.7.4-0r0) UNRELEASED; urgency=low
   * Bump kde-sc-dev-latest build dependency to 4:4.7.4.
   * Add myself to Uploaders.
 
- -- Debian Qt/KDE Maintainers <debian-qt-kde@lists.debian.org>  Thu, 08 Dec 2011 01:47:05 +0100
+ -- Debian Qt/KDE Maintainers <debian-qt-kde@lists.debian.org>  Sun, 18 Dec 2011 01:36:24 +0100
 
 step (4:4.7.2-1) experimental; urgency=low
 
