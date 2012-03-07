@@ -1,3 +1,9 @@
+step (4:4.7.4-2) unstable; urgency=low
+
+  * Team upload. Upload to unstable.
+
+ -- Pino Toscano <pino@debian.org>  Wed, 07 Mar 2012 17:55:58 +0100
+
 step (4:4.7.4-1) experimental; urgency=low
 
   * New upstream release. 
