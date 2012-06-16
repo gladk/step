@@ -5,6 +5,7 @@ step (4:4.8.4-0r1) UNRELEASED; urgency=low
   * Bump kde-sc-dev-latest build dependency to 4.8.4.
   * Bump kdelibs5-dev build dependency to 4.8.
   * Bump Standards-Version to 3.9.3, no changes required.
+  * Add watch file.
 
  -- Debian Qt/KDE Maintainers <debian-qt-kde@lists.debian.org>  Sat, 16 Jun 2012 19:43:46 +0200
 
