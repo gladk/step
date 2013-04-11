@@ -2,6 +2,9 @@ step (4:4.10.2-0r1) UNRELEASED; urgency=low
 
   * New upstream release.
 
+  [ Pino Toscano ]
+  * Bump the kde-sc-dev-latest and kdelibs5-dev build dependencies to 4.10.
+
  -- Debian Qt/KDE Maintainers <debian-qt-kde@lists.debian.org>  Thu, 11 Apr 2013 19:22:37 +0200
 
 step (4:4.8.4-1) unstable; urgency=low
