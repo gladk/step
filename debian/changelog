@@ -1,5 +1,7 @@
 step (4:4.11.5-1) UNRELEASED; urgency=medium
 
+  [ Lisandro Damián Nicanor Pérez Meyer ]
+  * New upstream release.
 
  -- Debian Qt/KDE Maintainers <debian-qt-kde@lists.debian.org>  Sat, 18 Jan 2014 20:51:31 -0300
 
