@@ -1,4 +1,6 @@
-step (4:4.11.5-1) UNRELEASED; urgency=medium
+step (4:4.11.5-1) unstable; urgency=medium
+
+  * Team upload.
 
   [ Lisandro Damián Nicanor Pérez Meyer ]
   * New upstream release.
@@ -6,7 +8,7 @@ step (4:4.11.5-1) UNRELEASED; urgency=medium
     - Apply Anton Gladky's patch to use Eigen3.
   * Bump Standards-Version to 3.9.5, no changes required.
 
- -- Debian Qt/KDE Maintainers <debian-qt-kde@lists.debian.org>  Sat, 18 Jan 2014 20:51:31 -0300
+ -- Lisandro Damián Nicanor Pérez Meyer <lisandro@debian.org>  Sat, 18 Jan 2014 21:36:21 -0300
 
 step (4:4.11.3-1) unstable; urgency=low
 
