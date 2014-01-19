@@ -1,0 +1,75 @@
+Description: replace libeigen2-dev by libeigen3-dev
+Author: Anton Gladky <gladk@debian.org>
+Bug-Debian: http://bugs.debian.org/726162
+Last-Update: 2013-12-01
+
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -9,11 +9,11 @@
+ 
+ set(CMAKE_MODULE_PATH ${step_SOURCE_DIR}/cmake/modules )
+ 
+-find_package(Eigen2 2.0.3)
++find_package(Eigen3)
+ macro_optional_find_package(GSL)
+ macro_optional_find_package(Qalculate)
+ 
+-macro_log_feature(EIGEN2_FOUND "Eigen2" "Required to build step." "http://eigen.tuxfamily.org" TRUE "2.0.3" "")
++macro_log_feature(EIGEN3_FOUND "Eigen3" "Required to build step." "http://eigen.tuxfamily.org" TRUE "2.0.3" "")
+ macro_log_feature(QALCULATE_FOUND "Qalculate" "Unit conversion support in Step" "http://qalculate.sourceforge.net/" FALSE "0.9.5" "")
+ macro_log_feature(GSL_FOUND "GSL" "Provides a GSL-powered solver for Step" "http://www.gnu.org/software/gsl/" FALSE "1.8" "")
+ 
+@@ -22,8 +22,9 @@
+ set(STEPCORE_WITH_QT ON) # CACHE BOOL "Enable QT-powered features for StepCore")
+ set(STEP_WITH_QALCULATE ${QALCULATE_FOUND} CACHE BOOL "Enable unit conversion support using libqalculate")
+ 
+-if (EIGEN2_FOUND)
+-   include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${EIGEN2_INCLUDE_DIR})
++if (EIGEN3_FOUND)
++   include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${EIGEN3_INCLUDE_DIR})
++   add_definitions( -DEIGEN2_SUPPORT)
+ 
+    add_subdirectory(doc) 
+    add_subdirectory(stepcore)
+@@ -32,7 +33,7 @@
+    if(STEPCORE_TESTS)
+      add_subdirectory(stepcore_tests)
+    endif(STEPCORE_TESTS)
+-endif (EIGEN2_FOUND)
++endif (EIGEN3_FOUND)
+ 
+ if (${CMAKE_CURRENT_SOURCE_DIR} STREQUAL ${CMAKE_SOURCE_DIR})
+    macro_display_feature_log()
+--- a/step/propertiesbrowser.cc
++++ b/step/propertiesbrowser.cc
+@@ -389,7 +389,7 @@
+                         if(p->userTypeId() == QMetaType::Double) {
+                             vv = 0;
+                         } else if(p->userTypeId() == qMetaTypeId<StepCore::Vector2d>()) {
+-                            StepCore::Vector2d svv(0);
++                            StepCore::Vector2d svv=StepCore::Vector2d::Zero();
+                             vv = QVariant::fromValue(svv);
+                         /* XXX
+                          * } else if(p->userTypeId() == qMetaTypeId<StepCore::Vector2dList >())
+--- a/stepcore/constraintsolver.cc
++++ b/stepcore/constraintsolver.cc
+@@ -96,7 +96,7 @@
+             ++fmaxIndex;
+         }
+     }    
+-    ei_constrained_cg(a, c, x, b, f, iter);
++    internal::constrained_cg(a, c, x, b, f, iter);
+ 
+     info->force = info->jacobian.transpose() * x;
+ 
+--- a/stepcore/types.h
++++ b/stepcore/types.h
+@@ -34,7 +34,7 @@
+ typedef Eigen::SparseMatrix<double> SparseColMatrix;
+ typedef Eigen::SparseMatrix<double,Eigen::RowMajor> SparseRowMatrix;
+ // a sparse matrix with efficient write facilities
+-typedef Eigen::DynamicSparseMatrix<double,Eigen::RowMajor> DynSparseRowMatrix;
++typedef Eigen::SparseMatrix<double,Eigen::RowMajor> DynSparseRowMatrix;
+ typedef Eigen::Map<Eigen::VectorXd> MappedVector;
+ 
+ ///////////////// Color
