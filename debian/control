@@ -2,17 +2,18 @@ Source: step
 Section: kde
 Priority: optional
 Maintainer: Debian Qt/KDE Maintainers <debian-qt-kde@lists.debian.org>
-Uploaders: Eshat Cakar <info@eshat.de>,
-           Maximiliano Curia <maxy@debian.org>
-Build-Depends: kde-sc-dev-latest (>= 4:4.12),
- cmake, debhelper (>= 9), pkg-kde-tools (>= 0.12),
- kdelibs5-dev (>= 4:4.11),
- libeigen3-dev (>= 3.2.0-6),
- libglib2.0-dev,
- libgsl0-dev (>= 1.8),
- libqalculate-dev (>= 0.9.5),
- libqt4-opengl-dev,
- libx11-dev,
+Uploaders: Eshat Cakar <info@eshat.de>, Maximiliano Curia <maxy@debian.org>
+Build-Depends: cmake,
+               debhelper (>= 9),
+               kde-sc-dev-latest (>= 4:4.12),
+               kdelibs5-dev (>= 4:4.11),
+               libeigen3-dev (>= 3.2.0-6),
+               libglib2.0-dev,
+               libgsl0-dev (>= 1.8),
+               libqalculate-dev (>= 0.9.5),
+               libqt4-opengl-dev,
+               libx11-dev,
+               pkg-kde-tools (>= 0.12)
 Standards-Version: 3.9.5
 Homepage: http://edu.kde.org/
 Vcs-Browser: http://anonscm.debian.org/gitweb/?p=pkg-kde/kde-sc/step.git
@@ -21,7 +22,7 @@ Vcs-Git: git://anonscm.debian.org/pkg-kde/kde-sc/step.git
 Package: step
 Architecture: any
 Section: science
-Depends: ${shlibs:Depends}, ${misc:Depends}
+Depends: ${misc:Depends}, ${shlibs:Depends}
 Description: interactive physical simulator for KDE
  With Step you can not only learn but feel how physics works. You place some
  bodies on the scene, add some forces such as gravity or springs, then click
