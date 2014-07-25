@@ -1,6 +1,7 @@
 step (4:4.13.3-1) UNRELEASED; urgency=medium
 
   * New upstream release.
+  * Add basic autopkgtests.
 
  -- Maximiliano Curia <maxy@debian.org>  Wed, 16 Jul 2014 13:06:03 +0200
 
