@@ -3,8 +3,10 @@ Author: Anton Gladky <gladk@debian.org>
 Bug-Debian: http://bugs.debian.org/726162
 Last-Update: 2013-12-01
 
---- a/CMakeLists.txt
-+++ b/CMakeLists.txt
+Index: step/CMakeLists.txt
+===================================================================
+--- step.orig/CMakeLists.txt	2014-07-25 12:37:10.992073323 +0200
++++ step/CMakeLists.txt	2014-07-25 12:38:35.948713478 +0200
 @@ -9,11 +9,11 @@
  
  set(CMAKE_MODULE_PATH ${step_SOURCE_DIR}/cmake/modules )
@@ -19,7 +21,7 @@ Last-Update: 2013-12-01
  macro_log_feature(QALCULATE_FOUND "Qalculate" "Unit conversion support in Step" "http://qalculate.sourceforge.net/" FALSE "0.9.5" "")
  macro_log_feature(GSL_FOUND "GSL" "Provides a GSL-powered solver for Step" "http://www.gnu.org/software/gsl/" FALSE "1.8" "")
  
-@@ -22,8 +22,9 @@
+@@ -21,15 +21,16 @@
  set(STEPCORE_WITH_QT ON) # CACHE BOOL "Enable QT-powered features for StepCore")
  set(STEP_WITH_QALCULATE ${QALCULATE_FOUND} CACHE BOOL "Enable unit conversion support using libqalculate")
  
@@ -31,17 +33,18 @@ Last-Update: 2013-12-01
  
     add_subdirectory(doc) 
     add_subdirectory(stepcore)
-@@ -32,7 +33,7 @@
-    if(STEPCORE_TESTS)
-      add_subdirectory(stepcore_tests)
-    endif(STEPCORE_TESTS)
+    add_subdirectory(step)
+ 
+    add_subdirectory(stepcore_tests)
 -endif (EIGEN2_FOUND)
 +endif (EIGEN3_FOUND)
  
  if (${CMAKE_CURRENT_SOURCE_DIR} STREQUAL ${CMAKE_SOURCE_DIR})
     macro_display_feature_log()
---- a/step/propertiesbrowser.cc
-+++ b/step/propertiesbrowser.cc
+Index: step/step/propertiesbrowser.cc
+===================================================================
+--- step.orig/step/propertiesbrowser.cc	2014-07-25 12:37:10.992073323 +0200
++++ step/step/propertiesbrowser.cc	2014-07-25 12:37:10.988073482 +0200
 @@ -389,7 +389,7 @@
                          if(p->userTypeId() == QMetaType::Double) {
                              vv = 0;
@@ -51,8 +54,10 @@ Last-Update: 2013-12-01
                              vv = QVariant::fromValue(svv);
                          /* XXX
                           * } else if(p->userTypeId() == qMetaTypeId<StepCore::Vector2dList >())
---- a/stepcore/constraintsolver.cc
-+++ b/stepcore/constraintsolver.cc
+Index: step/stepcore/constraintsolver.cc
+===================================================================
+--- step.orig/stepcore/constraintsolver.cc	2014-07-25 12:37:10.992073323 +0200
++++ step/stepcore/constraintsolver.cc	2014-07-25 12:37:10.988073482 +0200
 @@ -96,7 +96,7 @@
              ++fmaxIndex;
          }
@@ -62,9 +67,11 @@ Last-Update: 2013-12-01
  
      info->force = info->jacobian.transpose() * x;
  
---- a/stepcore/types.h
-+++ b/stepcore/types.h
-@@ -34,7 +34,7 @@
+Index: step/stepcore/types.h
+===================================================================
+--- step.orig/stepcore/types.h	2014-07-25 12:37:10.992073323 +0200
++++ step/stepcore/types.h	2014-07-25 12:37:10.988073482 +0200
+@@ -35,7 +35,7 @@
  typedef Eigen::SparseMatrix<double> SparseColMatrix;
  typedef Eigen::SparseMatrix<double,Eigen::RowMajor> SparseRowMatrix;
  // a sparse matrix with efficient write facilities
