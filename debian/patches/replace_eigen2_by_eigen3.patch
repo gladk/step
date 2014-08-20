@@ -5,8 +5,8 @@ Last-Update: 2013-12-01
 
 Index: step/CMakeLists.txt
 ===================================================================
---- step.orig/CMakeLists.txt	2014-07-25 12:37:10.992073323 +0200
-+++ step/CMakeLists.txt	2014-07-25 12:38:35.948713478 +0200
+--- step.orig/CMakeLists.txt	2014-08-20 17:55:27.912482687 +0200
++++ step/CMakeLists.txt	2014-08-20 17:55:27.908482851 +0200
 @@ -9,11 +9,11 @@
  
  set(CMAKE_MODULE_PATH ${step_SOURCE_DIR}/cmake/modules )
@@ -39,12 +39,12 @@ Index: step/CMakeLists.txt
 -endif (EIGEN2_FOUND)
 +endif (EIGEN3_FOUND)
  
- if (${CMAKE_CURRENT_SOURCE_DIR} STREQUAL ${CMAKE_SOURCE_DIR})
-    macro_display_feature_log()
+ install(FILES step.appdata.xml DESTINATION ${SHARE_INSTALL_PREFIX}/appdata/)
+ 
 Index: step/step/propertiesbrowser.cc
 ===================================================================
---- step.orig/step/propertiesbrowser.cc	2014-07-25 12:37:10.992073323 +0200
-+++ step/step/propertiesbrowser.cc	2014-07-25 12:37:10.988073482 +0200
+--- step.orig/step/propertiesbrowser.cc	2014-08-20 17:55:27.912482687 +0200
++++ step/step/propertiesbrowser.cc	2014-08-20 17:55:27.908482851 +0200
 @@ -389,7 +389,7 @@
                          if(p->userTypeId() == QMetaType::Double) {
                              vv = 0;
@@ -56,8 +56,8 @@ Index: step/step/propertiesbrowser.cc
                           * } else if(p->userTypeId() == qMetaTypeId<StepCore::Vector2dList >())
 Index: step/stepcore/constraintsolver.cc
 ===================================================================
---- step.orig/stepcore/constraintsolver.cc	2014-07-25 12:37:10.992073323 +0200
-+++ step/stepcore/constraintsolver.cc	2014-07-25 12:37:10.988073482 +0200
+--- step.orig/stepcore/constraintsolver.cc	2014-08-20 17:55:27.912482687 +0200
++++ step/stepcore/constraintsolver.cc	2014-08-20 17:55:27.908482851 +0200
 @@ -96,7 +96,7 @@
              ++fmaxIndex;
          }
@@ -69,8 +69,8 @@ Index: step/stepcore/constraintsolver.cc
  
 Index: step/stepcore/types.h
 ===================================================================
---- step.orig/stepcore/types.h	2014-07-25 12:37:10.992073323 +0200
-+++ step/stepcore/types.h	2014-07-25 12:37:10.988073482 +0200
+--- step.orig/stepcore/types.h	2014-08-20 17:55:27.912482687 +0200
++++ step/stepcore/types.h	2014-08-20 17:55:27.908482851 +0200
 @@ -35,7 +35,7 @@
  typedef Eigen::SparseMatrix<double> SparseColMatrix;
  typedef Eigen::SparseMatrix<double,Eigen::RowMajor> SparseRowMatrix;
