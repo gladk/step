@@ -1,2 +1,4 @@
 version=3
-http://download.kde.org/stable/([\d.]+)/src/step-([\d.]+).tar.xz
+http://download.kde.org/stable/applications/([\d.]+)/src/step-([\d.]+).tar.xz
+
+http://download.kde.org/unstable/applications/([\d.]+)/src/step-([\d.]+).tar.xz
