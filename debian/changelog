@@ -1,9 +1,10 @@
-step (4:14.12.2-0ubuntu1~ubuntu15.04~ppa1) vivid; urgency=medium
+step (4:14.12.2-0ubuntu1) UNRELEASED; urgency=medium
 
   * New upstream release
   * Remove unstable from watch file, uscan fails with 
     remote site does not even have current version
   * Fix replace_eigen2_by_eigen3 patch to reflect new text.
+  * Fix version for git.
 
  -- Scarlett Clark <sgclark@kubuntu.org>  Fri, 06 Feb 2015 19:11:48 -0800
 
