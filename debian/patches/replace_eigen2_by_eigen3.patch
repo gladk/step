@@ -21,7 +21,7 @@ Index: step/CMakeLists.txt
  macro_log_feature(QALCULATE_FOUND "Qalculate" "Unit conversion support in Step" "http://qalculate.sourceforge.net/" FALSE "0.9.5" "")
  macro_log_feature(GSL_FOUND "GSL" "Provides a GSL-powered solver for Step" "http://www.gnu.org/software/gsl/" FALSE "1.8" "")
  
-@@ -21,15 +21,16 @@
+@@ -21,18 +21,19 @@
  set(STEPCORE_WITH_QT ON) # CACHE BOOL "Enable QT-powered features for StepCore")
  set(STEP_WITH_QALCULATE ${QALCULATE_FOUND} CACHE BOOL "Enable unit conversion support using libqalculate")
  
@@ -35,6 +35,9 @@ Index: step/CMakeLists.txt
     add_subdirectory(stepcore)
     add_subdirectory(step)
  
+    # Note: Disabled temporarily because WorldCopyTestSolver inherits both Body
+    # 	   and Force.  And both of these are now inheriting Item, which
+    # 	   creates an error. This needs to be sorted out.
     add_subdirectory(stepcore_tests)
 -endif (EIGEN2_FOUND)
 +endif (EIGEN3_FOUND)
