@@ -6,7 +6,7 @@ step (4:14.12.2-0ubuntu1) vivid; urgency=medium
   * Fix replace_eigen2_by_eigen3 patch to reflect new text.
   * Fix version for git.
 
- -- Scarlett Clark <sgclark@kubuntu.org>  Tue, 10 Feb 2015 07:56:53 -0800
+ -- Scarlett Clark <sgclark@kubuntu.org>  Tue, 10 Feb 2015 08:36:39 -0800
 
 step (4:14.12.0-0ubuntu1) vivid; urgency=medium
 
