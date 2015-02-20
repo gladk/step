@@ -7,7 +7,7 @@ step (4:14.12.2-1~) UNRELEASED; urgency=medium
 step (4:14.12.2-0ubuntu1) vivid; urgency=medium
 
   * New upstream release
-  * Remove unstable from watch file, uscan fails with 
+  * Remove unstable from watch file, uscan fails with
     remote site does not even have current version
   * Fix replace_eigen2_by_eigen3 patch to reflect new text.
   * Fix version for git.
@@ -401,7 +401,7 @@ step (4:4.8.2-0ubuntu1) precise; urgency=low
 
 step (4:4.8.1-0ubuntu1) precise; urgency=low
 
-  * New upstream release 
+  * New upstream release
 
  -- Philip Muškovac <yofel@kubuntu.org>  Sun, 04 Mar 2012 21:17:14 +0100
 
@@ -437,8 +437,8 @@ step (4:4.7.4-2) unstable; urgency=low
 
 step (4:4.7.4-1) experimental; urgency=low
 
-  * New upstream release. 
-  
+  * New upstream release.
+
   [ José Manuel Santamaría Lema ]
   * Bump kde-sc-dev-latest build dependency to 4:4.7.4.
   * Add myself to Uploaders.
@@ -487,8 +487,8 @@ step (4:4.7.1-0ubuntu1) oneiric; urgency=low
 
 step (4:4.7.0-0ubuntu1) oneiric; urgency=low
 
-  * New upstream release 
-  * Drop step_needs_-lcln.diff as it's not needed anymore 
+  * New upstream release
+  * Drop step_needs_-lcln.diff as it's not needed anymore
 
  -- Philip Muškovac <yofel@kubuntu.org>  Wed, 27 Jul 2011 11:30:05 +0200
 
