@@ -1,9 +1,9 @@
-step (4:14.12.2-1~) UNRELEASED; urgency=medium
+step (4:14.12.2-1) experimental; urgency=medium
 
   * New upstream release (14.12.2).
   * Bump Standards-Version to 3.9.6, no changes needed.
 
- -- Maximiliano Curia <maxy@debian.org>  Fri, 20 Feb 2015 19:21:59 +0100
+ -- Maximiliano Curia <maxy@debian.org>  Sat, 21 Feb 2015 07:29:34 +0100
 
 step (4:14.12.2-0ubuntu1) vivid; urgency=medium
 
