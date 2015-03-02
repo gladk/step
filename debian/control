@@ -5,13 +5,20 @@ Maintainer: Debian/Kubuntu Qt/KDE Maintainers <debian-qt-kde@lists.debian.org>
 Uploaders: Eshat Cakar <info@eshat.de>, Maximiliano Curia <maxy@debian.org>
 Build-Depends: cmake,
                debhelper (>= 9),
-               kde-sc-dev-latest (>= 4:4.12),
-               kdelibs5-dev,
+               extra-cmake-modules (>= 1.0.0),
+               kdoctools-dev,
+               qtdeclarative5-dev (>= 5.2.0),
+               libqt5svg5-dev (>= 5.2.0),
+               libqt5opengl5-dev (>= 5.2.0),
+               libkf5khtml-dev,
+               libkf5config-dev,
+               libkf5kdelibs4support-dev,
+               libkf5newstuff-dev,
+               libkf5plotting-dev,
                libeigen3-dev (>= 3.2.0-6),
                libglib2.0-dev,
                libgsl0-dev (>= 1.8),
                libqalculate-dev (>= 0.9.5),
-               libqt4-opengl-dev,
                libx11-dev,
                pkg-kde-tools (>= 0.12)
 Standards-Version: 3.9.6
