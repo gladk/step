@@ -1,8 +1,8 @@
-step (4:14.12.3-0ubuntu1) UNRELEASED; urgency=medium
+step (4:14.12.3-0ubuntu1) vivid; urgency=medium
 
   * New upstream release
 
- -- Scarlett Clark <sgclark@kubuntu.org>  Mon, 09 Mar 2015 11:44:55 -0700
+ -- Scarlett Clark <sgclark@kubuntu.org>  Fri, 13 Mar 2015 13:21:06 -0700
 
 step (4:14.12.2-1) experimental; urgency=medium
 
