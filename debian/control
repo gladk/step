@@ -19,12 +19,12 @@ Build-Depends: cmake (>= 2.8.12~),
                libkf5plotting-dev,
                libqalculate-dev (>= 0.9.5),
                libqt4-opengl-dev,
-               libqt5opengl5-dev (>= 5.2~),
-               libqt5svg5-dev (>= 5.2~),
+               libqt5opengl5-dev (>= 5.4),
+               libqt5svg5-dev (>= 5.4),
                libx11-dev,
                pkg-kde-tools (>= 0.12),
-               qtbase5-dev (>= 5.2~),
-               qtdeclarative5-dev (>= 5.2~)
+               qtbase5-dev (>= 5.4),
+               qtdeclarative5-dev (>= 5.4)
 Standards-Version: 3.9.6
 Homepage: http://edu.kde.org/
 Vcs-Browser: http://anonscm.debian.org/cgit/pkg-kde/applications/step.git
