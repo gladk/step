@@ -2,6 +2,7 @@ step (4:15.04.1-1~) UNRELEASED; urgency=medium
 
   * New upstream release (15.04.0).
   * New upstream release (15.04.1).
+  * Remove upstream applied patch: replace_eigen2_by_eigen3.patch
 
  -- Maximiliano Curia <maxy@debian.org>  Mon, 18 May 2015 14:19:14 +0200
 
