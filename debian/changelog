@@ -49,6 +49,14 @@ step (4:14.11.97-0ubuntu1) vivid; urgency=medium
 
  -- Jonathan Riddell <jriddell@ubuntu.com>  Mon, 01 Dec 2014 18:03:53 +0100
 
+step (4:4.14.2-2) unstable; urgency=medium
+
+  * Team upload.
+  * Add libsoprano-dev to build-depends since it is no longer pulled in
+    transatively
+
+ -- Scott Kitterman <scott@kitterman.com>  Fri, 28 Aug 2015 16:32:42 -0400
+
 step (4:4.14.2-1) unstable; urgency=medium
 
   * New upstream release (4.14.2).
