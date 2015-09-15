@@ -1,0 +1,417 @@
+Description: Remove eigen2 support
+Author: Anton Gladky <gladk@debian.org>
+Bug-Debian: https://bugs.debian.org/786351
+Last-Update: 2015-09-15
+
+--- step-15.08.0.orig/CMakeLists.txt
++++ step-15.08.0/CMakeLists.txt
+@@ -68,7 +68,6 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}
+ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-unused-parameter")
+ 
+ include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${EIGEN3_INCLUDE_DIR})
+-add_definitions(-DEIGEN2_SUPPORT_STAGE40_FULL_EIGEN3_STRICTNESS) #TODO port away from Eigen2-compatability mode
+ 
+ add_subdirectory(doc)
+ add_subdirectory(stepcore)
+--- step-15.08.0.orig/step/gasgraphics.cc
++++ step-15.08.0/step/gasgraphics.cc
+@@ -138,20 +138,20 @@ inline StepCore::Gas* GasVertexHandlerGr
+ }
+ 
+ StepCore::Vector2d GasVertexHandlerGraphicsItem::value() {
+-    return gas()->measureRectSize().cwise()*(corners[_vertexNum]);
++    return (gas()->measureRectSize().array()*(corners[_vertexNum]).array()).matrix();
+ }
+ 
+ void GasVertexHandlerGraphicsItem::setValue(const StepCore::Vector2d& value)
+ {
+     StepCore::Vector2d oCorner = gas()->measureRectCenter() -
+-                    gas()->measureRectSize().cwise()*(corners[_vertexNum]);
++                    (gas()->measureRectSize().array()*(corners[_vertexNum].array())).matrix();
+ 
+     StepCore::Vector2d delta = (gas()->measureRectCenter() + value - oCorner)/2.0;
+     StepCore::Vector2d newPos = oCorner + delta;
+     StepCore::Vector2d newSize = (newPos - oCorner)*2.0;
+ 
+     double d = -0.1/currentViewScale();
+-    StepCore::Vector2d sign = delta.cwise()*(corners[_vertexNum]);
++    StepCore::Vector2d sign = (delta.array()*(corners[_vertexNum].array())).matrix();
+     if(sign[0] < d || sign[1] < d) {
+         if(sign[0] < d) {
+             newPos[0] = oCorner[0]; newSize[0] = 0;
+@@ -270,7 +270,7 @@ OnHoverHandlerGraphicsItem* GasGraphicsI
+ 
+     int num = -1; double minDist2 = HANDLER_SNAP_SIZE*HANDLER_SNAP_SIZE/s/s;
+     for(unsigned int i=0; i<4; ++i) {
+-        double dist2 = (l - size.cwise()*(OnHoverHandlerGraphicsItem::corners[i])).squaredNorm();
++        double dist2 = (l - (size.array()*(OnHoverHandlerGraphicsItem::corners[i]).array()).matrix()).squaredNorm();
+         if(dist2 < minDist2) { num = i; minDist2 = dist2; }
+     }
+ 
+--- step-15.08.0.orig/step/polygongraphics.cc
++++ step-15.08.0/step/polygongraphics.cc
+@@ -547,21 +547,21 @@ inline StepCore::Box* BoxVertexHandlerGr
+ }
+ 
+ StepCore::Vector2d BoxVertexHandlerGraphicsItem::value() {
+-    return box()->vectorLocalToWorld(box()->size().cwise()*(corners[_vertexNum]));
++    return box()->vectorLocalToWorld((box()->size().array()*(corners[_vertexNum]).array()).matrix());
+     //return box()->vectorLocalToWorld(box()->vertexes()[_vertexNum]);
+ }
+ 
+ void BoxVertexHandlerGraphicsItem::setValue(const StepCore::Vector2d& value)
+ {
+     StepCore::Vector2d oCorner = box()->position() -
+-                        box()->size().cwise()*(corners[_vertexNum]);
++                        (box()->size().array()*(corners[_vertexNum].array())).matrix();
+ 
+     StepCore::Vector2d delta = (box()->position() + value - oCorner)/2.0;
+     StepCore::Vector2d newPos = oCorner + delta;
+     StepCore::Vector2d newSize = (newPos - oCorner)*2.0;
+ 
+     double d = -0.1/currentViewScale();
+-    StepCore::Vector2d sign = delta.cwise()*(corners[_vertexNum]);
++    StepCore::Vector2d sign = (delta.array()*(corners[_vertexNum]).array()).matrix();
+     if(sign[0] < d || sign[1] < d) {
+         if(sign[0] < d) {
+             newPos[0] = oCorner[0]; newSize[0] = 0;
+@@ -603,7 +603,7 @@ OnHoverHandlerGraphicsItem* BoxGraphicsI
+     
+     int num = -1; double minDist2 = HANDLER_SNAP_SIZE*HANDLER_SNAP_SIZE/s/s;
+     for(unsigned int i=0; i<4; ++i) {
+-        double dist2 = (l - size.cwise()*(OnHoverHandlerGraphicsItem::corners[i])).squaredNorm();
++        double dist2 = (l - (size.array()*(OnHoverHandlerGraphicsItem::corners[i]).array()).matrix()).squaredNorm();
+         if(dist2 < minDist2) { num = i; minDist2 = dist2; }
+     }
+ 
+--- step-15.08.0.orig/step/toolgraphics.cc
++++ step-15.08.0/step/toolgraphics.cc
+@@ -79,7 +79,7 @@ StepCore::Vector2d WidgetVertexHandlerGr
+     double s = currentViewScale();
+     StepCore::Vector2d size = _item->metaObject()->property("size")->
+                             readVariant(_item).value<StepCore::Vector2d>()/s;
+-    return size.cwise()* corners[_vertexNum];
++    return (size.array()* corners[_vertexNum].array()).matrix();
+ }
+ 
+ void WidgetVertexHandlerGraphicsItem::setValue(const StepCore::Vector2d& value)
+@@ -94,7 +94,7 @@ void WidgetVertexHandlerGraphicsItem::se
+     StepCore::Vector2d position = _item->metaObject()->property("position")->
+                             readVariant(_item).value<StepCore::Vector2d>();
+ 
+-    StepCore::Vector2d oCorner = position - size.cwise()*(corners[_vertexNum]);
++    StepCore::Vector2d oCorner = position - (size.array()*((corners[_vertexNum]).array())).matrix();
+ 
+     oCorner = pointToVector( viewportTransform.inverted().map(
+                 QPointF(viewportTransform.map(vectorToPoint(oCorner)).toPoint()) ));
+@@ -105,7 +105,7 @@ void WidgetVertexHandlerGraphicsItem::se
+                 QPointF(viewportTransform.map(vectorToPoint(newPos)).toPoint()) ));
+     StepCore::Vector2d newSize = (newPos - oCorner)*2.0;
+ 
+-    StepCore::Vector2d sign = delta.cwise()*(corners[_vertexNum]);
++    StepCore::Vector2d sign = (delta.array()*(corners[_vertexNum].array())).matrix();
+     double d = -0.1/s;
+     if(sign[0] < d || sign[1] < d) {
+         if(sign[0] < d) {
+@@ -157,7 +157,7 @@ OnHoverHandlerGraphicsItem* WidgetGraphi
+ 
+     int num = -1; double minDist2 = HANDLER_SNAP_SIZE*HANDLER_SNAP_SIZE/s/s;
+     for(unsigned int i=0; i<4; ++i) {
+-        double dist2 = (l - size.cwise()*(WidgetVertexHandlerGraphicsItem::corners[i])).squaredNorm();
++        double dist2 = (l - (size.array()*(WidgetVertexHandlerGraphicsItem::corners[i]).array()).matrix()).squaredNorm();
+         if(dist2 < minDist2) { num = i; minDist2 = dist2; }
+     }
+ 
+--- step-15.08.0.orig/stepcore/constraintsolver.cc
++++ step-15.08.0/stepcore/constraintsolver.cc
+@@ -20,6 +20,7 @@
+ #include "rigidbody.h"
+ #include "particle.h"
+ #include "types.h"
++#include <iostream>
+ #include <unsupported/Eigen/IterativeSolvers>
+ #include <cmath>
+ 
+--- step-15.08.0.orig/stepcore/coulombforce.cc
++++ step-15.08.0/stepcore/coulombforce.cc
+@@ -68,12 +68,16 @@ void CoulombForce::calcForce(bool calcVa
+                 ChargedParticleErrors* pe1 = p1->chargedParticleErrors();
+                 ChargedParticleErrors* pe2 = p2->chargedParticleErrors();
+                 Vector2d rV = pe2->positionVariance() + pe1->positionVariance();
+-                Vector2d forceV = force.cwise().square().cwise()* (
++                Vector2d forceV = force.array().square()* (
++        /*  This term was disabled and needs to be discussed with upstream.
++         *  The definition Vector2d(double) is really forbidden and brings
++         *  an undefined behavior
+                         Vector2d(coulombForceErrors()->_coulombConstVariance / square(_coulombConst) +
+                                  pe1->chargeVariance() / square(p1->charge()) +
+                                  pe2->chargeVariance() / square(p2->charge())) +
++        */
+                         Vector2d(rV[0] * square(1/r[0] - 3*r[0]/rnorm2) + rV[1] * square(3*r[1]/rnorm2),
+-                                 rV[1] * square(1/r[1] - 3*r[1]/rnorm2) + rV[0] * square(3*r[0]/rnorm2)));
++                                 rV[1] * square(1/r[1] - 3*r[1]/rnorm2) + rV[0] * square(3*r[0]/rnorm2))).array();
+                 pe1->applyForceVariance(forceV);
+                 pe2->applyForceVariance(forceV);
+             }
+--- step-15.08.0.orig/stepcore/eulersolver.cc
++++ step-15.08.0/stepcore/eulersolver.cc
+@@ -69,7 +69,7 @@ int GenericEulerSolver::doStep(double t,
+     _ytemp = *y + (stepSize/2)*_ydiff;
+         
+     if(yvar) { // error calculation
+-        *ytempvar = (yvar->cwise().sqrt()+(stepSize/2)*(*ydiffvar)).cwise().square();
++        *ytempvar = (yvar->array().sqrt().matrix()+(stepSize/2)*(*ydiffvar)).array().square().matrix();
+     }
+ 
+     int ret = _function(t + stepSize/2, _ytemp.data(), ytempvar?ytempvar->data():0,
+@@ -105,8 +105,8 @@ int GenericEulerSolver::doStep(double t,
+         // For now we are using the following formula which
+         // assumes that yerr are equal and correlated on adjacent steps
+         // TODO: improve this formula
+-        *yvar = (ytempvar->cwise().sqrt()+(stepSize/2)*(*ydiffvar)).cwise().square()
+-              + 3*_yerr.cwise().square();
++        *yvar = (ytempvar->array().sqrt().matrix()+(stepSize/2)*(*ydiffvar)).array().square().matrix()
++              + 3*_yerr.array().square().matrix();
+     }
+ 
+     return OK;
+--- step-15.08.0.orig/stepcore/gas.cc
++++ step-15.08.0/stepcore/gas.cc
+@@ -134,7 +134,7 @@ void GasLJForce::calcForce(bool calcVari
+                     Vector2d rV = pe2->positionVariance() + pe1->positionVariance();
+ 
+                     GasLJForceErrors* ge = gasLJForceErrors();
+-                    Vector2d forceV = r.cwise().square() * (
++                    Vector2d forceV = r.array().square().matrix() * (
+                         ge->_rminVariance * square( (12*_a/_rmin/rnorm6 - 6*_b/_rmin)/rnorm8 ) +
+                         ge->_depthVariance * square( 12*(_rmin12/rnorm6 - _rmin6)/rnorm8 ) );
+ 
+@@ -364,7 +364,7 @@ Vector2d GasErrors::rectMeanVelocityVari
+         if(p1->position()[0] < r0[0] || p1->position()[0] > r1[0] ||
+             p1->position()[1] < r0[1] || p1->position()[1] > r1[1]) continue;
+ 
+-        velocityVariance += (p1->velocity() - velocity).cwise().square(); 
++        velocityVariance += (p1->velocity() - velocity).array().square().matrix(); 
+ 
+         ParticleErrors* pe1 = static_cast<ParticleErrors*>(p1->tryGetObjectErrors());
+         if(pe1) velocityVariance += pe1->velocityVariance();
+@@ -422,7 +422,7 @@ double GasErrors::rectMeanKineticEnergyV
+         if(pe1) {
+             energyVariance +=
+                 pe1->massVariance() * square(p1->velocity().squaredNorm()) +
+-                ((2*p1->mass()*p1->velocity()).cwise().square()).dot(pe1->velocityVariance());
++                ((2*p1->mass()*p1->velocity()).array().square().matrix()).dot(pe1->velocityVariance());
+         }
+ 
+         ++count;
+@@ -481,7 +481,7 @@ double GasErrors::rectTemperatureVarianc
+         if(pe1) {
+             temperatureVariance +=
+                 pe1->massVariance() * square((p1->velocity() - meanVelocity).squaredNorm()) +
+-                ((p1->mass()*(p1->velocity() - meanVelocity)).cwise().square()).dot(pe1->velocityVariance());
++                ((p1->mass()*(p1->velocity() - meanVelocity)).array().square().matrix()).dot(pe1->velocityVariance());
+         }
+ 
+         ++count;
+@@ -540,7 +540,7 @@ double GasErrors::rectPressureVariance()
+         if(pe1) {
+             pressureVariance +=
+                 pe1->massVariance() * square((p1->velocity() - meanVelocity).squaredNorm()) +
+-                ((p1->mass()*(p1->velocity() - meanVelocity)).cwise().square()).dot(pe1->velocityVariance());
++                ((p1->mass()*(p1->velocity() - meanVelocity)).array().square().matrix()).dot(pe1->velocityVariance());
+         }
+     }
+ 
+--- step-15.08.0.orig/stepcore/gas.h
++++ step-15.08.0/stepcore/gas.h
+@@ -198,7 +198,7 @@ public:
+     void setMeasureRectCenter(const Vector2d& measureRectCenter) { _measureRectCenter = measureRectCenter; }
+ 
+     const Vector2d& measureRectSize() const { return _measureRectSize; }
+-    void setMeasureRectSize(const Vector2d& measureRectSize) { _measureRectSize = measureRectSize.cwise().abs(); }
++    void setMeasureRectSize(const Vector2d& measureRectSize) { _measureRectSize = measureRectSize.array().abs().matrix(); }
+ 
+     /** Get (and possibly create) GasErrors object */
+     GasErrors* gasErrors() {
+--- step-15.08.0.orig/stepcore/gravitation.cc
++++ step-15.08.0/stepcore/gravitation.cc
+@@ -85,12 +85,18 @@ void GravitationForce::calcForce(bool ca
+                 ParticleErrors* pe1 = p1->particleErrors();
+                 ParticleErrors* pe2 = p2->particleErrors();
+                 Vector2d rV = pe2->positionVariance() + pe1->positionVariance();
+-                Vector2d forceV = force.cwise().square() .cwise()* (
++                Vector2d forceV = force.array().square()* (
++    
++        /*  This term was disabled and needs to be discussed with upstream.
++         *  The definition Vector2d(double) is really forbidden and brings
++         *  an undefined behavior
+                         Vector2d(gravitationForceErrors()->_gravitationConstVariance / square(_gravitationConst) +
+                                  pe1->massVariance() / square(p1->mass()) +
+                                  pe2->massVariance() / square(p2->mass())) +
++        */
++           
+                         Vector2d(rV[0] * square(1/r[0] - 3*r[0]/rnorm2) + rV[1] * square(3*r[1]/rnorm2),
+-                                 rV[1] * square(1/r[1] - 3*r[1]/rnorm2) + rV[0] * square(3*r[0]/rnorm2)));
++                                 rV[1] * square(1/r[1] - 3*r[1]/rnorm2) + rV[0] * square(3*r[0]/rnorm2))).array();
+                 pe1->applyForceVariance(forceV);
+                 pe2->applyForceVariance(forceV);
+             }
+--- step-15.08.0.orig/stepcore/particle.cc
++++ step-15.08.0/stepcore/particle.cc
+@@ -70,24 +70,24 @@ Particle* ParticleErrors::particle() con
+ Vector2d ParticleErrors::accelerationVariance() const
+ {
+     return _forceVariance/square(particle()->mass()) +
+-        _massVariance*(particle()->force()/square(particle()->mass())).cwise().square();
++        _massVariance*(particle()->force()/square(particle()->mass())).array().square().matrix();
+ }
+ 
+ Vector2d ParticleErrors::momentumVariance() const
+ {
+     return _velocityVariance * square(particle()->mass()) +
+-           particle()->velocity().cwise().square() * _massVariance;
++           (particle()->velocity().array().square()).matrix() * _massVariance;
+ }
+ 
+ void ParticleErrors::setMomentumVariance(const Vector2d& momentumVariance)
+ {
+-    _velocityVariance = (momentumVariance - particle()->velocity().cwise().square() * _massVariance) /
++    _velocityVariance = (momentumVariance - (particle()->velocity().array().square()).matrix() * _massVariance) /
+                         square(particle()->mass());
+ }
+ 
+ double ParticleErrors::kineticEnergyVariance() const
+ {
+-    return particle()->velocity().cwise().square().dot(_velocityVariance) * square(particle()->mass()) +
++    return ((particle()->velocity().array().square()).matrix()).dot(_velocityVariance) * square(particle()->mass()) +
+            square(particle()->velocity().squaredNorm()/2) * _massVariance;
+ }
+ 
+@@ -95,7 +95,7 @@ void ParticleErrors::setKineticEnergyVar
+ {
+     _velocityVariance = (kineticEnergyVariance - square(particle()->velocity().squaredNorm()/2) * _massVariance) /
+                         square(particle()->mass()) / 2 *
+-                        (particle()->velocity().cwise().square().cwise().inverse());
++                        (particle()->velocity().array().square().array().inverse());
+     if(!std::isfinite(_velocityVariance[0]) || _velocityVariance[0] < 0 ||
+        !std::isfinite(_velocityVariance[1]) || _velocityVariance[1]) {
+         _velocityVariance.setZero();
+--- step-15.08.0.orig/stepcore/rigidbody.cc
++++ step-15.08.0/stepcore/rigidbody.cc
+@@ -105,7 +105,7 @@ RigidBody* RigidBodyErrors::rigidBody()
+ Vector2d RigidBodyErrors::accelerationVariance() const
+ {
+     return _forceVariance/square(rigidBody()->mass()) +
+-        _massVariance*(rigidBody()->force()/square(rigidBody()->mass())).cwise().square();
++        _massVariance*(rigidBody()->force()/square(rigidBody()->mass())).array().square().matrix();
+ }
+ 
+ double RigidBodyErrors::angularAccelerationVariance() const
+@@ -117,12 +117,12 @@ double RigidBodyErrors::angularAccelerat
+ Vector2d RigidBodyErrors::momentumVariance() const
+ {
+     return _velocityVariance * square(rigidBody()->mass()) +
+-           rigidBody()->velocity().cwise().square() * _massVariance;
++           rigidBody()->velocity().array().square().matrix() * _massVariance;
+ }
+ 
+ void RigidBodyErrors::setMomentumVariance(const Vector2d& momentumVariance)
+ {
+-    _velocityVariance = (momentumVariance - rigidBody()->velocity().cwise().square() * _massVariance) /
++    _velocityVariance = (momentumVariance - rigidBody()->velocity().array().square().matrix() * _massVariance) /
+                         square(rigidBody()->mass());
+ }
+ 
+@@ -141,7 +141,7 @@ void RigidBodyErrors::setAngularMomentum
+ 
+ double RigidBodyErrors::kineticEnergyVariance() const
+ {
+-    return (rigidBody()->velocity().cwise().square()).dot(_velocityVariance) * square(rigidBody()->mass()) +
++    return (rigidBody()->velocity().array().square().matrix()).dot(_velocityVariance) * square(rigidBody()->mass()) +
+            square(rigidBody()->velocity().squaredNorm()/2) * _massVariance +
+            _angularVelocityVariance * square(rigidBody()->angularVelocity() * rigidBody()->inertia()) +
+            square(square(rigidBody()->angularVelocity())/2) * _inertiaVariance;
+@@ -150,9 +150,9 @@ double RigidBodyErrors::kineticEnergyVar
+ void RigidBodyErrors::setKineticEnergyVariance(double kineticEnergyVariance)
+ {
+     double t = kineticEnergyVariance - this->kineticEnergyVariance() +
+-              (rigidBody()->velocity().cwise().square()).dot(_velocityVariance) * square(rigidBody()->mass());
++              (rigidBody()->velocity().array().square().matrix()).dot(_velocityVariance) * square(rigidBody()->mass());
+     _velocityVariance = t / square(rigidBody()->mass()) / 2 *
+-                        (rigidBody()->velocity().cwise().square().cwise().inverse());
++                        (rigidBody()->velocity().array().square().inverse().matrix());
+     if(!std::isfinite(_velocityVariance[0]) || _velocityVariance[0] < 0 ||
+        !std::isfinite(_velocityVariance[1]) || _velocityVariance[1]) {
+         _velocityVariance.setZero();
+@@ -349,7 +349,7 @@ Box::Box(Vector2d position, double angle
+ 
+ void Box::setSize(const Vector2d& size)
+ {
+-    Vector2d s(size.cwise().abs()/2.0);
++    Vector2d s(size.array().abs().matrix()/2.0);
+ 
+     _vertexes[0] << -s[0], -s[1];
+     _vertexes[1] <<  s[0], -s[1];
+--- step-15.08.0.orig/stepcore/spring.cc
++++ step-15.08.0/stepcore/spring.cc
+@@ -112,8 +112,8 @@ void Spring::calcForce(bool calcVariance
+         Vector2d forceV = (se->_restLengthVariance * square(_stiffness) +
+                            se->_stiffnessVariance * square(dl) +
+                            se->_dampingVariance * square(vr/l) +
+-                           ( (_damping/l*r).cwise().square() ).dot(vV)
+-                           )/square(l)*r.cwise().square();
++                           ( (_damping/l*r).array().square() ).matrix().dot(vV)
++                           )/square(l)*r.array().square();
+ 
+         forceV[0] += rV[0] * square(_stiffness*( 1 - _restLength/l*(1 - square(r[0]/l)) ) +
+                                     _damping/(l*l)*( v[0]*r[0] + vr - 2*vr*square(r[0]/l) )) +
+@@ -276,9 +276,9 @@ double SpringErrors::forceVariance() con
+     return square(dl) * _stiffnessVariance +
+            square(s->stiffness()) * _restLengthVariance +
+            square(r.dot(v)/l) * _dampingVariance +
+-           vV.dot((s->damping()/l*r).cwise().square()) +
++           vV.dot((s->damping()/l*r).array().square().matrix()) +
+            rV.dot((( s->stiffness() - s->damping()*r.dot(v) / (l*l) ) / l * r +
+-              s->damping() / l * v).cwise().square());
++              s->damping() / l * v).array().square().matrix());
+ }
+ 
+ /*
+--- step-15.08.0.orig/stepcore/tool.h
++++ step-15.08.0/stepcore/tool.h
+@@ -103,7 +103,7 @@ public:
+     /** Get size of the note */
+     const Vector2d& size() const { return _size; }
+     /** Set size of the note */
+-    void setSize(const Vector2d& size) { _size = size.cwise().abs(); }
++    void setSize(const Vector2d& size) { _size = size.array().abs(); }
+ 
+     /** Get note text */
+     const QString& text() const { return _text; }
+@@ -138,7 +138,7 @@ public:
+     /** Get size of the graph */
+     const Vector2d& size() const { return _size; }
+     /** Set size of the graph */
+-    void setSize(const Vector2d& size) { _size = size.cwise().abs(); }
++    void setSize(const Vector2d& size) { _size = size.array().abs(); }
+ 
+     /** Get pointer to the objects for X axis */
+     Object* objectX() const { return _objectX; }
+@@ -291,7 +291,7 @@ public:
+     /** Get size of the meter */
+     const Vector2d& size() const { return _size; }
+     /** Set size of the meter */
+-    void setSize(const Vector2d& size) { _size = size.cwise().abs(); }
++    void setSize(const Vector2d& size) { _size = size.array().abs(); }
+ 
+     /** Get pointer to the observed object */
+     Object* object() const { return _object; }
+@@ -370,7 +370,7 @@ public:
+     /** Get size of the Controller */
+     const Vector2d& size() const { return _size; }
+     /** Set size of the Controller */
+-    void setSize(const Vector2d& size) { _size = size.cwise().abs(); }
++    void setSize(const Vector2d& size) { _size = size.array().abs(); }
+ 
+     /** Get pointer to the controlled object */
+     Object* object() const { return _object; }
